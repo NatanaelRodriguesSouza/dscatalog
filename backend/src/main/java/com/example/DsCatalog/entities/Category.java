@@ -2,6 +2,7 @@ package com.example.DsCatalog.entities;
 
 import jakarta.persistence.*;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,6 +14,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     private String name;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant createdAt;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant updateAt;
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
     public Category() {
@@ -22,7 +27,15 @@ public class Category {
         this.id = id;
         this.name = name;
     }
+    @PrePersist
+    public void prePersist() {
+        createdAt = Instant.now();
+    }
 
+    @PreUpdate
+    public void preUpdate() {
+        updateAt = Instant.now();
+    }
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -50,4 +63,13 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdateAt() {
+        return updateAt;
+    }
+
 }

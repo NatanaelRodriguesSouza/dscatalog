@@ -5,7 +5,6 @@ import com.example.DsCatalog.entities.Category;
 public class CategoryDTO {
     private Long id ;
     private String name;
-
     public CategoryDTO() {
     }
 

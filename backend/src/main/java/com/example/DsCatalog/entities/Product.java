@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 
-@Service
+@Entity
 @Table(name = "tb_product")
 public class Product {
     @Id

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,8 +25,8 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Transactional
-    public Page<ProductDTO> findAllPaged(PageRequest pageRequest){
-        Page<Product> result = repository.findAll(pageRequest);
+    public Page<ProductDTO> findAllPaged(Pageable pageable){
+        Page<Product> result = repository.findAll(pageable);
         Page<ProductDTO> list = result.map(x->new ProductDTO(x));
         return list;
     }
@@ -35,7 +36,6 @@ public class ProductService {
         Product entity = obj.orElseThrow(()-> new ResourceNotFoundException("Entidade não encontrada"));
         return new ProductDTO(entity,entity.getCategories());
     }
-
     @Transactional
     public ProductDTO insert(ProductDTO dto){
         Product entity = new Product();

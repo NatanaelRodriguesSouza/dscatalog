@@ -2,6 +2,10 @@ package com.example.DsCatalog.Dto;
 
 import com.example.DsCatalog.entities.Category;
 import com.example.DsCatalog.entities.Product;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,10 +16,14 @@ import java.util.Set;
 public class ProductDTO {
 
     private Long id;
+    @Size(min = 3 , max = 60,message = "Deve ter entre 3 e 60 caracteres")
+    @NotBlank(message = "Campo requerido")
     private String name;
     private String description;
+    @Positive(message = "Preço deve ser um campo positivo")
     private Double price;
     private String imgUrl;
+    @PastOrPresent
     private Instant date;
 
     private List<CategoryDTO> categories = new ArrayList<>();

@@ -22,7 +22,7 @@ import java.net.URI;
 public class UserController {
     @Autowired
     private UserService service;
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         Page<UserDTO> list = service.findAllPaged(pageable);
@@ -30,25 +30,27 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto) {
         UserDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newDto.getId()).toUri();
         return ResponseEntity.created(uri).body(newDto);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO dto) {
         UserDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

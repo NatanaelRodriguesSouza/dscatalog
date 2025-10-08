@@ -5,6 +5,7 @@ import com.example.DsCatalog.entities.Category;
 import com.example.DsCatalog.entities.Product;
 import com.example.DsCatalog.entities.Role;
 import com.example.DsCatalog.entities.User;
+import com.example.DsCatalog.projections.UserDetailsProjection;
 import com.example.DsCatalog.repository.CategoryRepository;
 import com.example.DsCatalog.repository.ProductRepository;
 import com.example.DsCatalog.repository.RoleRepository;
@@ -16,14 +17,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService{
     @Autowired
     private UserRepository repository;
     @Autowired

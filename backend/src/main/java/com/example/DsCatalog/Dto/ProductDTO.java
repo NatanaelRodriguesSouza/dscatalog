@@ -2,10 +2,7 @@ package com.example.DsCatalog.Dto;
 
 import com.example.DsCatalog.entities.Category;
 import com.example.DsCatalog.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -16,16 +13,23 @@ import java.util.Set;
 public class ProductDTO {
 
     private Long id;
-    @Size(min = 3 , max = 60,message = "Deve ter entre 3 e 60 caracteres")
+
+    @Size(min = 5, max = 60, message = "Deve ter entre 5 e 60 caracteres")
     @NotBlank(message = "Campo requerido")
     private String name;
+
+    @NotBlank(message = "Campo requerido")
     private String description;
-    @Positive(message = "Preço deve ser um campo positivo")
+
+    @Positive(message = "Preço deve ser um valor positivo")
     private Double price;
+
     private String imgUrl;
-    @PastOrPresent
+
+    @PastOrPresent(message = "A data do produto não pode ser futura")
     private Instant date;
 
+    @NotEmpty(message = "Produto sem categoria não é permitido")
     private List<CategoryDTO> categories = new ArrayList<>();
 
     public ProductDTO() {
@@ -58,27 +62,55 @@ public class ProductDTO {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Double getPrice() {
         return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getImgUrl() {
         return imgUrl;
     }
 
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public Instant getDate() {
         return date;
     }
 
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
     public List<CategoryDTO> getCategories() {
         return categories;
+    }
+
+    public void setCategories(List<CategoryDTO> categories) {
+        this.categories = categories;
     }
 }

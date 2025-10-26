@@ -1,6 +1,7 @@
 package com.example.DsCatalog.controllers.exceptions;
 
 import com.example.DsCatalog.services.excepetions.DatabaseException;
+import com.example.DsCatalog.services.excepetions.EmailException;
 import com.example.DsCatalog.services.excepetions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -48,6 +49,18 @@ public class ResourceExceptionsHandler {
         for(FieldError f : e.getBindingResult().getFieldErrors()){
             err.addError(f.getField(),f.getDefaultMessage());
         }
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<StandarError> email(EmailException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandarError err = new StandarError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(status.value());
+        err.setError("Email exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }

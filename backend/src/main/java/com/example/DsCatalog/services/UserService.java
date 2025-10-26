@@ -35,6 +35,8 @@ public class UserService{
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthService authService;
     @Transactional
     public Page<UserDTO> findAllPaged(Pageable pageable){
         Page<User> result = repository.findAll(pageable);
@@ -47,10 +49,19 @@ public class UserService{
         User entity = obj.orElseThrow(()-> new ResourceNotFoundException("Entidade não encontrada"));
         return new UserDTO(entity);
     }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public UserDTO findMe() {
+        User entity = authService.authenticated();
+        return new UserDTO(entity);
+    }
     @Transactional
     public UserDTO insert(UserInsertDTO dto){
         User entity = new User();
         copyToDtoToEntity(dto,entity);
+        entity.getRoles().clear();
+        Role role = roleRepository.findByAuthority("ROLE_OPERATOR");
+        entity.getRoles().add(role);
         entity.setPassword( passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         return new UserDTO(entity);

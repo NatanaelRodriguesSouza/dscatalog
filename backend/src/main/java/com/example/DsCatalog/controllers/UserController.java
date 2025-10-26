@@ -37,12 +37,17 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserInsertDTO dto) {
         UserDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newDto.getId()).toUri();
         return ResponseEntity.created(uri).body(newDto);
+    }
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
+    @GetMapping(value = "/me")
+    public ResponseEntity<UserDTO> findMe() {
+        UserDTO dto = service.findMe();
+        return ResponseEntity.ok().body(dto);
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")

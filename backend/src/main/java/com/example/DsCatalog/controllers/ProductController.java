@@ -5,6 +5,7 @@ import com.example.DsCatalog.Dto.ProductDTO;
 import com.example.DsCatalog.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,11 @@ public class ProductController {
     @Autowired
     private ProductService service;
     @GetMapping
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable){
-        Page<ProductDTO> result = service.findAllPaged(pageable);
+    public ResponseEntity<Page<ProductDTO>> findAll(
+           @RequestParam(value = "name" , defaultValue = "") String name,
+           @RequestParam(value = "categoryId" , defaultValue = "0") String categoryId,
+            Pageable pageable){
+        Page<ProductDTO> result = service.findAllPaged(name,categoryId,pageable);
         return ResponseEntity.ok().body(result);
     }
 

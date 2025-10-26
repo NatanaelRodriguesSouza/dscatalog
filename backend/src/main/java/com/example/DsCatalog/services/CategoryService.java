@@ -22,9 +22,9 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Transactional
-    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest){
-        Page<Category> result = categoryRepository.findAll(pageRequest);
-        Page<CategoryDTO> list = result.map(x->new CategoryDTO(x));
+    public List<CategoryDTO> findAll(){
+        List<Category> result = categoryRepository.findAll();
+        List<CategoryDTO> list = result.stream().map(x->new CategoryDTO(x)).toList();
         return list;
     }
     @Transactional
